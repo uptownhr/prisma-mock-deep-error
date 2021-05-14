@@ -1,8 +1,11 @@
-import {mockDeep} from "jest-mock-extended";
+import {mockDeep, MockProxy} from "jest-mock-extended";
 import { PrismaClient } from '@prisma/client'
+import { prismaMock } from "./singleton";
 
 test('no tes error', () => {
-  const prismaMock = mockDeep<PrismaClient>();
+  const prisma = mockDeep<PrismaClient>();
 
-  const spyEmployeeExists = jest.spyOn(prismaMock.user, 'findUnique');
+  const prismaMock2 = (prisma as unknown) as MockProxy<PrismaClient>
+
+  jest.spyOn(prismaMock.user, 'findUnique');
 })
